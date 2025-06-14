@@ -1,15 +1,21 @@
-import { usePGlite } from "@electric-sql/pglite-react"
-import { Button } from "./components/ui/button"
-import { Input } from "./components/ui/input"
 import Chat from "./components/Chat"
 import { Routes, Route } from "react-router"
 import SidebarWrapper from "./components/SidebarWrapper"
+import { useDispatch, useSelector } from "react-redux"
+import { setAvailableModels } from "./reducers/availableModels"
+import modelList from "./lib/models.json"
 
 
 function App() {
-  const db = usePGlite()
-  console.log(db.query('SELECT * FROM chats'))
-  console.log(db.query('SELECT * FROM messages'))
+  const models = useSelector(state => state.availableModels)
+  const dispatch = useDispatch()
+  if (models.length <= 1 ) {
+    fetch('https://openrouter.ai/api/v1/models')
+      .then(response => response.json())
+      .then(data => data.data.filter(model => modelList.models.includes(model.id)))
+      .then(models => dispatch(setAvailableModels(models)))
+  }
+
   return (
     <section className="flex items-end h-dvh">
       <SidebarWrapper/>
