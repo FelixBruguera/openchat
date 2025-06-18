@@ -2,9 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const selectedModelSlice = createSlice({
   name: 'selectedModel',
-  initialState: {
-    "id": "google/gemma-3-4b-it:free"
-  },
+  initialState: "Google: Gemma 3 4B (free)",
   reducers: {
     setSelectedModel(state, action) {
       return action.payload

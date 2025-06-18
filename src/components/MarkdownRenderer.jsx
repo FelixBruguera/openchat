@@ -60,7 +60,7 @@ const MarkdownRenderer = ({ content }) => {
                 PreTag="div"
                 showLineNumbers
                 wrapLongLines
-                customStyle={{ margin: 0, maxWidth: '60%'}}
+                customStyle={{ margin: 0}}
                 children={String(children).replace(/\n$/, '')}
                 {...props}
               />
@@ -115,7 +115,7 @@ const MarkdownRenderer = ({ content }) => {
           th({ children, align }) {
             return (
               <th 
-                className="border border-gray-300 px-4 py-2 font-bold bg-gray-100 dark:bg-stone-600 dark:text-white dark:border-gray-500"
+                className="border border-gray-300 px-4 py-2 font-bold bg-gray-200 dark:bg-stone-600 dark:text-white dark:border-gray-500"
                 style={{ textAlign: align || 'left' }}
               >
                 {children}

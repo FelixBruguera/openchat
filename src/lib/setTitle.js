@@ -12,5 +12,8 @@ export default async function setTitle(db, chatId, prompt) {
             db.query('UPDATE chats SET title = $1 WHERE id = $2', 
             [data.choices[0].text, chatId])
         })
-        .catch(error => error)
+        .catch(() => {
+            db.query('UPDATE chats SET title = $1 WHERE id = $2', 
+            [prompt, chatId])
+        })
 }
