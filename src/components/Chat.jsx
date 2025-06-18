@@ -9,6 +9,7 @@ import { useSelector } from "react-redux"
 import { useState, useCallback } from "react"
 import ChatMessages from "./ChatMessages"
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover"
+import { format } from 'date-fns'
 
 const Chat = ({ isNew = false }) => {
     const [error, setError] = useState(false)
@@ -28,13 +29,12 @@ const Chat = ({ isNew = false }) => {
     const selectedModel = useSelector((state) => {
         return state.availableModels.find(model => model.name === state.selectedModel)
     })
-    console.log(selectedModel)
     const apiKey = useSelector(state => state.apiKey)
 
     const formatMessages = (messages) => messages.map(mes => mes.model ? {role: 'assistant', content: mes.message } : {role: 'user', content: mes.message})
     const saveMessage = (fields) => {
         db.query('INSERT INTO messages (timestamp, message, model, tokens, chat_id) VALUES ($1, $2, $3, $4, $5)', 
-        [new Date().toLocaleString(), fields.message, fields.model, fields.tokens, fields.chatId])
+        [format(new Date(), 'MM/dd/yyyy, HH:MM'), fields.message, fields.model, fields.tokens, fields.chatId])
     }
 
     const handleSubmit = async (prompt) => {
