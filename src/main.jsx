@@ -11,7 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { PGlite } from '@electric-sql/pglite'
 import { live } from '@electric-sql/pglite/live'
 
-const db = PGlite.create({
+const db = new PGlite({
     dataDir: 'idb://chat',
     extensions: {
         live,
