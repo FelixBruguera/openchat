@@ -9,7 +9,7 @@ import store from './store'
 import initializeDatabase from './lib/initializeDatabase'
 import { ThemeProvider } from "@/components/theme-provider"
 
-const db = await initializeDatabase()
+const db = initializeDatabase()
 
 createRoot(document.getElementById('root')).render(
    <BrowserRouter>
