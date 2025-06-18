@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -120,15 +120,13 @@
 }
 
 ::-webkit-scrollbar {
-    @apply w-2.5 h-2.5;
-   
+  @apply w-2.5 h-2.5;
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-transparent
+  @apply bg-transparent;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-gray-500 border-[1px] border-transparent border-solid bg-clip-padding;
+  @apply rounded-full bg-gray-500 border-[1px] border-transparent border-solid bg-clip-padding;
 }
- 

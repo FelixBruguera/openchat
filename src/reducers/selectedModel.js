@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = localStorage.getItem('defaultModel') || 'Google: Gemma 3 4B (free)'
+const initialState =
+  localStorage.getItem('defaultModel') || 'Google: Gemma 3 4B (free)'
 
 const selectedModelSlice = createSlice({
   name: 'selectedModel',

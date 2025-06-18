@@ -11,13 +11,13 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarFooter,
-  SidebarHeader,
-  useSidebar
-} from "@/components/ui/sidebar"
-import { NavLink, useLocation, Link } from 'react-router'
+} from '@/components/ui/sidebar'
+import { useLocation } from 'react-router'
 import { Button } from './ui/button'
 import { ModeToggle } from './mode-togle'
-import { ArrowLeftToLine, ArrowRightToLine, Bot, Edit, Plus, Shrink } from 'lucide-react'
+import {
+  Plus,
+} from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import SidebarItemWrapper from './SidebarItemWrapper'
@@ -46,46 +46,51 @@ const SidebarWrapper = () => {
     await db.query('DELETE FROM chats WHERE id = $1', [chatId])
     navigate('/')
   }
-    return (
+  return (
     <SidebarProvider open={open} onOpenChange={setOpen} defaultOpen={true}>
-       <Sidebar collapsible='icon' side='left'>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarHeaderWrapper />
-            </SidebarMenuItem>
-          </SidebarMenu>
-           <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupContent>
-                <SidebarGroupLabel>Chats</SidebarGroupLabel>
-                <SidebarGroupAction onClick={() => navigate('/')}>
-                  <Plus />
-                </SidebarGroupAction>
-                <SidebarMenu>
-                  {open 
-                  ? chats.map((chat) => (
+      <Sidebar collapsible="icon" side="left">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarHeaderWrapper />
+          </SidebarMenuItem>
+        </SidebarMenu>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarGroupLabel>Chats</SidebarGroupLabel>
+              <SidebarGroupAction onClick={() => navigate('/')}>
+                <Plus />
+              </SidebarGroupAction>
+              <SidebarMenu>
+                {open ? (
+                  chats.map((chat) => (
                     <SidebarMenuItem key={chat.id} asChild>
                       <SidebarMenuButton asChild>
-                       <SidebarItemWrapper chat={chat} location={location} updateTitle={updateTitle} deleteChat={deleteChat}/>
+                        <SidebarItemWrapper
+                          chat={chat}
+                          location={location}
+                          updateTitle={updateTitle}
+                          deleteChat={deleteChat}
+                        />
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))
-                  : 
+                ) : (
                   <Button onClick={() => navigate('/')}>
-                      <Plus/>
-                    </Button>
-                  }
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-          <SidebarFooter className={open && 'flex-row justify-evenly'}>
-              <ModeToggle/>
-              <Settings />
-            </SidebarFooter>
-       </Sidebar>
+                    <Plus />
+                  </Button>
+                )}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter className={open && 'flex-row justify-evenly'}>
+          <ModeToggle />
+          <Settings />
+        </SidebarFooter>
+      </Sidebar>
     </SidebarProvider>
-    )
+  )
 }
 
 export default SidebarWrapper
