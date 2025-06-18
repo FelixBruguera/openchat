@@ -38,9 +38,6 @@ const Chat = ({ isNew = false }) => {
         return state.availableModels.find(model => model.name === state.selectedModel)
     })
     const apiKey = useSelector(state => state.apiKey)
-    console.log(apiKey)
-    console.log(chatTitle)
-    console.log(messages)
 
     const formatMessages = (messages) => messages.map(mes => mes.model ? {role: 'assistant', content: mes.message } : {role: 'user', content: mes.message})
     const saveMessage = (fields) => {
@@ -58,12 +55,10 @@ const Chat = ({ isNew = false }) => {
             setTitle(db, chatId, prompt)
             navigate(`/${chatId}`)
         }
-        console.log(chatId)
         saveMessage({
             message: prompt,
             chatId: chatId
         })
-        // rowVirtualizer.scrollToIndex(messages.length + 1, {align: 'end', behavior: 'smooth'})
         const response = await message(formattedMessages, selectedModel.id, apiKey)
         if (response.choices) {
             saveMessage({
@@ -147,14 +142,6 @@ const Chat = ({ isNew = false }) => {
                 </form>
                 <div className="flex items-center justify-start gap-5 transition-all">
                     <DropdownWrapper selectedModel={selectedModel.name}/>
-                    {/* <Button variant='outline'>
-                        <Globe />
-                        Search
-                    </Button>
-                    <Button variant='outline'>
-                        <Brain />
-                        Deep Thinking
-                    </Button> */}
                 </div>
             </div>
         </div>

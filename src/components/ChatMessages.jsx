@@ -18,7 +18,6 @@ const ChatMessages = ({ messages, isNew, loading, error, retry, onBranch }) => {
     useEffect(() => {
         rowVirtualizer.scrollToIndex(messages.length -1, {align: 'end'})
     }, [messages.length, rowVirtualizer])
-        console.log([rowVirtualizer, listRef.current])
 
     return (  
       <div ref={listRef} className="flex flex-col justify-start overflow-y-auto h-full bg-gray-100 py-3 dark:bg-stone-900">

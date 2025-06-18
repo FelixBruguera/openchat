@@ -8,8 +8,18 @@ import { Provider } from 'react-redux'
 import store from './store'
 import initializeDatabase from './lib/initializeDatabase'
 import { ThemeProvider } from "@/components/theme-provider"
+import { PGlite } from '@electric-sql/pglite'
+import { live } from '@electric-sql/pglite/live'
 
-const db = initializeDatabase()
+const db = PGlite.create({
+    dataDir: 'idb://chat',
+    extensions: {
+        live,
+    },
+    relaxedDurability: true,
+})
+
+initializeDatabase(db)
 
 createRoot(document.getElementById('root')).render(
    <BrowserRouter>

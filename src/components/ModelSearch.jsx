@@ -54,53 +54,6 @@ const ModelSearch = () => {
                 </DialogContent>
             </Dialog>
         </>
-        // <Dialog open={open} onOpenChange={setOpen}>
-        //     <DialogTrigger>
-        //         <Button className='my-2'>All Models</Button>
-        //     </DialogTrigger>
-        //     <DialogContent>
-        //         <DialogTitle>Models</DialogTitle>
-        //         <ModelList favoriteModels={favoriteModels} defaultModel={defaultModel} />
-        //         {/* <div ref={listRef} className='h-100 overflow-auto w-full'>
-        //             <div className='relative' style={{height: `${rowVirtualizer.getTotalSize()}px`}}>
-        //                     {virtualItems.map(virtualRow => {
-        //                     const model = availableModels[virtualRow.index]
-        //                     return (
-        //                         <div key={model.id} data-index={virtualRow.index} className='absolute' style={{transform: `translateY(${virtualRow.start}px)`, height: `${virtualRow.size}px`}}>
-        //                             <ModelItem
-        //                             onClick={onClick} name={model.name} id={model.id} isFavorite={favoriteModels.has(model.id)} isDefault={model.id === defaultModel}/>
-        //                         </div>
-        //                     )
-        //                 })}
-        //             </div>
-        //         </div> */}
-        //     </DialogContent>
-        // </Dialog>
-        // <>    
-        //     <Button onClick={() => setOpen(true)} className='my-2'>
-        //         Search models
-        //     </Button>
-        //     <CommandDialog open={open} onOpenChange={setOpen}>
-        //         <CommandInput placeholder="Search by name..."/>
-        //             <CommandGroup heading="Popular models">
-        //                     <CommandList ref={listRef}>
-        //                             <div className='relative' style={{height: `${rowVirtualizer.getTotalSize()}px`}}>
-        //                                 {rowVirtualizer.getVirtualItems().map(virtualRow => {
-        //                                     const model = availableModels[virtualRow.index]
-        //                                     return (
-        //                                         <div key={model.id} className='absolute' style={{transform: `translateY(${virtualRow.start}px)`}}>
-        //                                             <ModelItem
-        //                                             onClick={onClick} name={model.name} id={model.id} isFavorite={favoriteModels.has(model.id)} isDefault={model.id === defaultModel}/>
-        //                                         </div>
-        //                                     )
-        //                                 })}
-        //                             </div>
-        //                             <CommandEmpty>No results found.</CommandEmpty>
-        //                             {/* {availableModels.map(model => <ModelItem className='text-white' onClick={onClick} name={model.name} id={model.id} isFavorite={favoriteModels.has(model.id)} isDefault={model.id === defaultModel}/>)} */}
-        //                     </CommandList>
-        //             </CommandGroup>
-        //     </CommandDialog>
-        // </>
     )
 }
 
