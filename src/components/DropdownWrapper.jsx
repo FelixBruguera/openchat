@@ -34,7 +34,7 @@ const DropdownWrapper = memo(({ selectedModel }) => {
                 <DropdownMenuSeparator />
                 { favorites.length > 0 
                     ? favorites.map(favorite => 
-                    <DropdownMenuRadioItem value={favorite.name}>{favorite.name}</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem key={favorite.id} value={favorite.name}>{favorite.name}</DropdownMenuRadioItem>
                     )
                     : <p className="text-sm text-gray-600 dark:text-gray-300 py-2">You don't have any favorite models</p>
                 }

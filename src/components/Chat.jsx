@@ -1,19 +1,12 @@
 import { Button } from "./ui/button"
-import { Input } from "./ui/input"
 import useChat from "../hooks/useChat"
 import { usePGlite, useLiveQuery } from "@electric-sql/pglite-react"
 import { useNavigate, useParams } from "react-router"
-import Message from "./Message"
 import setTitle from "@/lib/setTitle"
 import { Textarea } from "./ui/textarea"
 import DropdownWrapper from "./DropdownWrapper"
-import { ModeToggle } from "./mode-togle"
-import { Brain, FileWarning, Globe, MessageSquareWarningIcon, Search, SearchCheckIcon, TriangleAlert } from "lucide-react"
 import { useSelector } from "react-redux"
 import { useState, useCallback } from "react"
-import ErrorMessage from "./ErrorMessage"
-import { Skeleton } from "./ui/skeleton"
-import { useVirtualizer } from '@tanstack/react-virtual'
 import ChatMessages from "./ChatMessages"
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover"
 
@@ -30,13 +23,12 @@ const Chat = ({ isNew = false }) => {
             WHERE chat_id = $1
             ORDER BY timestamp DESC)
             ORDER BY timestamp ASC;`, [params.id] )
-    const titleRequest = useLiveQuery(`SELECT title FROM chats WHERE id = $1`, [params.id] )
     const messages = messageQuery === undefined ? [] : messageQuery.rows
-    const chatTitle = titleRequest === undefined ? [] : titleRequest.rows
     const message = useChat()
     const selectedModel = useSelector((state) => {
         return state.availableModels.find(model => model.name === state.selectedModel)
     })
+    console.log(selectedModel)
     const apiKey = useSelector(state => state.apiKey)
 
     const formatMessages = (messages) => messages.map(mes => mes.model ? {role: 'assistant', content: mes.message } : {role: 'user', content: mes.message})
@@ -141,7 +133,7 @@ const Chat = ({ isNew = false }) => {
                     }
                 </form>
                 <div className="flex items-center justify-start gap-5 transition-all">
-                    <DropdownWrapper selectedModel={selectedModel.name}/>
+                    <DropdownWrapper selectedModel={selectedModel?.name}/>
                 </div>
             </div>
         </div>

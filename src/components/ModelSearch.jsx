@@ -8,12 +8,9 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
-import { useState } from "react"
 import { Button } from "./ui/button"
-import { useSelector, useDispatch } from "react-redux"
-import { setSelectedModel } from "@/reducers/selectedModel"
 import ModelItem from "./ModelItem"
-import { useCallback, useMemo, useRef } from "react"
+import { useState, useMemo, useRef } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useLiveQuery } from "@electric-sql/pglite-react"
 import { useVirtualizer } from '@tanstack/react-virtual'
@@ -27,9 +24,6 @@ const ModelSearch = () => {
     const favoriteModels = useMemo(() => {
         return favoritesQuery ? new Set(favoritesQuery.rows.map(row => row.openrouter_id)) : new Set()
     }, [favoritesQuery]);
-    const defaultQuery = useLiveQuery('SELECT openrouter_id FROM favorite_models WHERE isDefault = TRUE')
-    const defaultModel = useMemo(() => defaultQuery?.[0]?.openrouter_id, [defaultQuery]);
-    const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
 
@@ -50,7 +44,7 @@ const ModelSearch = () => {
                             Clear
                         </Button>
                     </div>
-                        <ModelList favoriteModels={favoriteModels} defaultModel={defaultModel} search={search}/>
+                        <ModelList favoriteModels={favoriteModels} search={search} />
                 </DialogContent>
             </Dialog>
         </>
