@@ -34,17 +34,21 @@ const Chat = ({ isNew = false }) => {
     const formatMessages = (messages) => messages.map(mes => mes.model ? {role: 'assistant', content: mes.message } : {role: 'user', content: mes.message})
     const saveMessage = (fields) => {
         db.query('INSERT INTO messages (timestamp, message, model, tokens, chat_id) VALUES ($1, $2, $3, $4, $5)', 
-        [format(new Date(), 'MM/dd/yyyy, HH:MM'), fields.message, fields.model, fields.tokens, fields.chatId])
+        [format(new Date(), 'MM/dd/yyyy, HH:mm:ss'), fields.message, fields.model, fields.tokens, fields.chatId])
     }
+    const systemPrompt = useSelector(state => state.systemPrompt)
 
     const handleSubmit = async (prompt) => {
         const formattedMessages = formatMessages(messages)
         formattedMessages.push({role: 'user', content: prompt})
+        if (systemPrompt) {
+            formattedMessages.unshift({role: 'system', content: systemPrompt})
+        }
         let chatId = params.id
         if (isNew) {
             const newChat = await db.query('INSERT INTO chats (title) VALUES ($1) RETURNING *', [' '])
             chatId = newChat.rows[0].id
-            setTitle(db, chatId, prompt)
+            setTitle(db, chatId, prompt, apiKey)
             navigate(`/${chatId}`)
         }
         saveMessage({
@@ -68,6 +72,9 @@ const Chat = ({ isNew = false }) => {
 
     const retrySubmit = async () => {
         const formattedMessages = formatMessages(messages)
+        if (systemPrompt) {
+            formattedMessages.unshift({role: 'system', content: systemPrompt})
+        }
         const response = await message(formattedMessages, selectedModel.id, apiKey)
         let chatId = params.id
         if (response.choices) {

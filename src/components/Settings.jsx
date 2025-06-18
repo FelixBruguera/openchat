@@ -14,14 +14,19 @@ import { Label } from "./ui/label"
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setApiKey } from "@/reducers/apiKey"
+import { Textarea } from "./ui/textarea"
+import { setSystemPrompt } from "@/reducers/systemPrompt"
 
 const Settings = () => {
     const dispatch = useDispatch()
     const key = useSelector(state => state.apiKey)
     const [inputValue, setInputValue] = useState(key)
+    const [promptValue, setPromptValue] = useState(localStorage.getItem('systemPrompt'))
     const onSave = () => {
+        localStorage.setItem('systemPrompt', promptValue)
         localStorage.setItem('apiKey', inputValue)
         dispatch(setApiKey(inputValue))
+        dispatch(setSystemPrompt(promptValue))
     }
 
     return (
@@ -43,6 +48,11 @@ const Settings = () => {
                     className="font-bold text-blue-600 hover:underline">
                     add them to your OpenRouter account.
                     </a>
+                </DialogDescription>
+                <Label htmlFor='systemPrompt'>System prompt</Label>
+                <Textarea className='border-1 border-gray-400 dark:border-gray-500' id='systemPrompt' value={promptValue} onChange={(e) => setPromptValue(e.target.value)}/>
+                <DialogDescription>
+                    *Some models don't support a system prompt
                 </DialogDescription>
                 <DialogClose asChild>
                     <Button onClick={() => onSave()}>

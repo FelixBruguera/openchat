@@ -1,8 +1,8 @@
-export default async function setTitle(db, chatId, prompt) {
+export default async function setTitle(db, chatId, prompt, apiKey) {
     const url = 'https://openrouter.ai/api/v1/completions';
     await fetch(url, {
         method: 'POST',
-        headers: {Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_KEY}`, 'Content-Type': 'application/json'},
+        headers: {Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json'},
         body: `{"model":"google/gemma-3-4b-it:free","prompt":"Generate a chat title from this prompt: ${prompt}.
         Use the same language as the prompt. Make it concise, easy to understand and less than 50 characters long. 
         Answer only with the title"}`

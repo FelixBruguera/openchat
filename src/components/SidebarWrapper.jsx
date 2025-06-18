@@ -42,6 +42,10 @@ const SidebarWrapper = () => {
   const updateTitle = (newTitle, chatId) => {
     db.query('UPDATE chats SET title = $1 WHERE id = $2', [newTitle, chatId])
   }
+  const deleteChat = async (chatId) => {
+    await db.query('DELETE FROM chats WHERE id = $1', [chatId])
+    navigate('/')
+  }
     return (
     <SidebarProvider open={open} onOpenChange={setOpen} defaultOpen={true}>
        <Sidebar collapsible='icon' side='left'>
@@ -62,7 +66,7 @@ const SidebarWrapper = () => {
                   ? chats.map((chat) => (
                     <SidebarMenuItem key={chat.id} asChild>
                       <SidebarMenuButton asChild>
-                       <SidebarItemWrapper chat={chat} location={location} updateTitle={updateTitle}/>
+                       <SidebarItemWrapper chat={chat} location={location} updateTitle={updateTitle} deleteChat={deleteChat}/>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))
