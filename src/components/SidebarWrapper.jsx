@@ -15,9 +15,7 @@ import {
 import { useLocation } from 'react-router'
 import { Button } from './ui/button'
 import { ModeToggle } from './mode-togle'
-import {
-  Plus,
-} from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import SidebarItemWrapper from './SidebarItemWrapper'

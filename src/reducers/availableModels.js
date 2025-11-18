@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import modelList from '../lib/models.json'
 
 const initialState = [
   {

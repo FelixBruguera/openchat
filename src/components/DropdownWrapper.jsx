@@ -9,44 +9,38 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from './ui/button'
-import { useDispatch } from 'react-redux'
 import { useLiveQuery } from '@electric-sql/pglite-react'
-import { setSelectedModel } from '@/reducers/selectedModel'
 import ModelSearch from './ModelSearch'
 import { memo } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { useSelectedModel } from '@/stores/useSelectedModel'
 
 const DropdownWrapper = memo(({ selectedModel }) => {
-  const dispatch = useDispatch()
+  const setSelectedModel = useSelectedModel((state) => state.setModel)
   const query = useLiveQuery('SELECT * FROM favorite_models')
   const favorites = query === undefined ? [] : query.rows
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="w-fit max-w-6/10">
-        <Button>
-          <p className="max-w-9/10 overflow-clip">{selectedModel}</p>
-          <svg
-            className="fill-white dark:fill-black"
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="#CCCCCC"
-          >
-            <path d="M480-360 280-560h400L480-360Z" />
-          </svg>
+        <Button variant="outline">
+          <p className="max-w-9/10 overflow-clip">{selectedModel.name}</p>
+          <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup
-          value={selectedModel}
-          onValueChange={(e) => dispatch(setSelectedModel(e))}
+          value={selectedModel.id || selectedModel.openrouter_id}
         >
           <DropdownMenuLabel>Favorite models</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {favorites.length > 0 ? (
             favorites.map((favorite) => (
-              <DropdownMenuRadioItem key={favorite.id} value={favorite.name}>
+              <DropdownMenuRadioItem
+                key={favorite.id}
+                value={favorite.id}
+                onClick={() => setSelectedModel(favorite)}
+              >
                 {favorite.name}
               </DropdownMenuRadioItem>
             ))

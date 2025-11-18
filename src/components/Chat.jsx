@@ -10,6 +10,8 @@ import { useState, useCallback } from 'react'
 import ChatMessages from './ChatMessages'
 import { Popover, PopoverTrigger, PopoverContent } from './ui/popover'
 import { format } from 'date-fns'
+import { Forward } from 'lucide-react'
+import { useSelectedModel } from '@/stores/useSelectedModel'
 
 const Chat = ({ isNew = false }) => {
   const [error, setError] = useState(false)
@@ -29,11 +31,7 @@ const Chat = ({ isNew = false }) => {
   )
   const messages = messageQuery === undefined ? [] : messageQuery.rows
   const message = useChat()
-  const selectedModel = useSelector((state) => {
-    return state.availableModels.find(
-      (model) => model.name === state.selectedModel,
-    )
-  })
+  const selectedModel = useSelectedModel((state) => state.model)
   const apiKey = useSelector((state) => state.apiKey)
 
   const formatMessages = (messages) =>
@@ -76,7 +74,11 @@ const Chat = ({ isNew = false }) => {
       message: prompt,
       chatId: chatId,
     })
-    const response = await message(formattedMessages, selectedModel.id, apiKey)
+    const response = await message(
+      formattedMessages,
+      selectedModel.openrouter_id,
+      apiKey,
+    )
     if (response.choices) {
       saveMessage({
         message: response.choices[0].message.content,
@@ -95,7 +97,11 @@ const Chat = ({ isNew = false }) => {
     if (systemPrompt) {
       formattedMessages.unshift({ role: 'system', content: systemPrompt })
     }
-    const response = await message(formattedMessages, selectedModel.id, apiKey)
+    const response = await message(
+      formattedMessages,
+      selectedModel.openrouter_id,
+      apiKey,
+    )
     let chatId = params.id
     if (response.choices) {
       saveMessage({
@@ -143,7 +149,7 @@ const Chat = ({ isNew = false }) => {
   }
 
   return (
-    <div className="w-full h-dvh flex flex-col justify-between">
+    <div className="w-full h-dvh flex flex-col justify-between bg-neutral-200 dark:bg-stone-900">
       <ChatMessages
         messages={messages}
         isNew={isNew}
@@ -152,7 +158,7 @@ const Chat = ({ isNew = false }) => {
         retry={retry}
         onBranch={handleBranch}
       />
-      <div className="p-3 flex flex-col gap-3 bg-sidebar border-t-1 border-t-gray-300 dark:border-t-gray-900 h-fit dark:bg-sidebar">
+      <div className="p-3 flex flex-col gap-3 bg-transparent h-fit w-full max-w-300 mx-auto">
         <form
           className="flex justify-start items-center"
           onSubmit={(e) => {
@@ -167,19 +173,24 @@ const Chat = ({ isNew = false }) => {
           }}
         >
           <Textarea
-            className="border-1 bg-white border-gray-400 w-8/10 lg:w-9/10 max-w-300 h-fit max-h-45 field-sizing-content dark:bg-neutral-700 transition-all"
+            className="text-base! lg:text-lg! border border-gray-300 dark:border-gray-700 rounded-lg w-8/10 lg:w-9/10 max-w-300 h-fit min-h-20 max-h-45 field-sizing-content bg-transparent dark:bg-transparent transition-all"
             name="prompt"
             id="prompt"
+            required
           />
           {apiKey ? (
-            <Button type="submit" className="h-10 m-auto">
-              Send
+            <Button
+              type="submit"
+              variant="ghost"
+              className="size-fit p-3 text-stone-700 dark:text-gray-300 mx-auto border border-transparent hover:border-zinc-300 dark:hover:border-zinc-700 hover:cursor-pointer rounded-lg transition-colors"
+            >
+              <Forward className="size-5" />
             </Button>
           ) : (
             <Popover>
               <PopoverTrigger className="h-10 m-auto">
                 <Button type="submit" disabled={true}>
-                  Send
+                  <SendHorizonal />
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
@@ -189,7 +200,7 @@ const Chat = ({ isNew = false }) => {
           )}
         </form>
         <div className="flex items-center justify-start gap-5 transition-all">
-          <DropdownWrapper selectedModel={selectedModel?.name} />
+          <DropdownWrapper selectedModel={selectedModel} />
         </div>
       </div>
     </div>

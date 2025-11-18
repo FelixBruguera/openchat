@@ -7,17 +7,23 @@ const SidebarHeaderWrapper = () => {
   return (
     <SidebarHeader className="text-xl font-bold items-center">
       {open ? (
-        'Open Chat'
+        <div className="flex items-center gap-2">
+          <img src="/icon.png" className="size-7" alt="Open Chat" />
+          <h1 className="text-xl">Open Chat</h1>
+        </div>
       ) : (
-        <Button
-          variant="outline"
-          className="w-9"
-          onClick={() => {
-            isMobile ? setOpenMobile(true) : setOpen(true)
-          }}
-        >
-          <ArrowRightToLine />
-        </Button>
+        <div className="flex flex-col gap-3 items-center">
+          <img src="/icon.png" className="size-8" />
+          <Button
+            variant="outline"
+            className="w-9"
+            onClick={() => {
+              isMobile ? setOpenMobile(true) : setOpen(true)
+            }}
+          >
+            <ArrowRightToLine />
+          </Button>
+        </div>
       )}
       <SidebarGroupAction
         onClick={() => {

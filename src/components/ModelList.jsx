@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux'
 import ModelItem from './ModelItem'
 import { useCallback, useState } from 'react'
+import { useAvailableModels } from '@/stores/useAvailableModels'
 
-const ModelList = ({ favoriteModels, search }) => {
-  const availableModels = useSelector((state) => state.availableModels)
+const ModelList = ({ favoriteModels, search, showDetails }) => {
+  const availableModels = useAvailableModels((state) => state.models)
   const filterModels = () => {
     const cleanSearch = search.trim().toLowerCase()
     if (!cleanSearch || cleanSearch.replace(' ', '').length <= 2) {
@@ -19,28 +19,31 @@ const ModelList = ({ favoriteModels, search }) => {
     localStorage.getItem('defaultModel'),
   )
   const saveDefault = useCallback((model) => {
-    localStorage.setItem('defaultModel', model)
+    localStorage.setItem(
+      'defaultModel',
+      JSON.stringify({ name: model.name, openrouter_id: model.id }),
+    )
     setDefaultModel(model)
   }, [])
   return (
-    <div className="h-full w-full overflow-auto">
+    <ul className="h-full w-full overflow-auto flex flex-col gap-6 lg:gap-3">
       {search.length <= 2 ? (
-        <p className="text-muted-foreground text-center text-md">
+        <li className="text-muted-foreground text-center text-md">
           Enter at least 3 characters
-        </p>
+        </li>
       ) : (
         filteredModels.map((model) => (
           <ModelItem
             key={model.id}
-            name={model.name}
-            id={model.id}
+            model={model}
             isFavorite={favoriteModels.has(model.id)}
-            isDefault={model.name === defaultModel}
+            isDefault={model.name === defaultModel.name}
             saveDefault={saveDefault}
+            showDetails={showDetails}
           />
         ))
       )}
-    </div>
+    </ul>
   )
 }
 

@@ -16,13 +16,13 @@ const ChatMessages = ({ messages, isNew, loading, error, retry, onBranch }) => {
   const virtualItems = rowVirtualizer.getVirtualItems()
 
   useEffect(() => {
-    rowVirtualizer.scrollToIndex(messages.length - 1, { align: 'end' })
+    rowVirtualizer.scrollToIndex(messages.length, { align: 'end' })
   }, [messages.length, rowVirtualizer])
 
   return (
     <div
       ref={listRef}
-      className="flex flex-col justify-start overflow-y-auto h-full bg-gray-100 py-3 dark:bg-stone-900"
+      className="flex flex-col justify-start overflow-y-auto h-full py-3 max-w-350 w-full mx-auto mt-5"
     >
       <div
         className="relative"
