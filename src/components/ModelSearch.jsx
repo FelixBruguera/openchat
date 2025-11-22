@@ -1,23 +1,18 @@
 import { Button } from './ui/button'
-import { useState, useMemo } from 'react'
-import { useLiveQuery } from '@electric-sql/pglite-react'
+import { useMemo, useState } from 'react'
 import { Dialog, DialogContent, DialogTitle } from './ui/dialog'
 import ModelList from './ModelList'
 import { Input } from './ui/input'
 import { Switch } from './ui/switch'
 
-const ModelSearch = () => {
-  const favoritesQuery = useLiveQuery(
-    'SELECT openrouter_id FROM favorite_models',
-  )
-  const favoriteModels = useMemo(() => {
-    return favoritesQuery
-      ? new Set(favoritesQuery.rows.map((row) => row.openrouter_id))
-      : new Set()
-  }, [favoritesQuery])
+const ModelSearch = ({ favoriteModels }) => {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [showDetails, setShowDetails] = useState(false)
+  const favoriteModelsIds = useMemo(
+    () => new Set(favoriteModels.map((model) => model.id)),
+    [favoriteModels],
+  )
 
   return (
     <>
@@ -50,14 +45,16 @@ const ModelSearch = () => {
                     setShowDetails((previousState) => !previousState)
                   }
                 />
-                <p className="text-sm text-stone-300">Show details</p>
+                <p className="text-sm text-stone-700 dark:text-stone-300">
+                  Show details
+                </p>
               </div>
             </div>
           </div>
           <ModelList
-            favoriteModels={favoriteModels}
             search={search}
             showDetails={showDetails}
+            favoriteModelsIds={favoriteModelsIds}
           />
         </DialogContent>
       </Dialog>

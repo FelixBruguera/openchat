@@ -12,23 +12,22 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { setApiKey } from '@/reducers/apiKey'
 import { Textarea } from './ui/textarea'
-import { setSystemPrompt } from '@/reducers/systemPrompt'
+import { useApiKey } from '@/stores/useApiKey'
+import { useSystemPrompt } from '@/stores/useSystemPrompt'
 
 const Settings = () => {
-  const dispatch = useDispatch()
-  const key = useSelector((state) => state.apiKey)
+  const key = useApiKey((state) => state.key)
+  const setKey = useApiKey((state) => state.setKey)
+  const systemPrompt = useSystemPrompt((state) => state.prompt)
+  const setSystemPrompt = useSystemPrompt((state) => state.setPrompt)
   const [inputValue, setInputValue] = useState(key)
-  const [promptValue, setPromptValue] = useState(
-    localStorage.getItem('systemPrompt'),
-  )
+  const [promptValue, setPromptValue] = useState(systemPrompt)
   const onSave = () => {
     localStorage.setItem('systemPrompt', promptValue)
     localStorage.setItem('apiKey', inputValue)
-    dispatch(setApiKey(inputValue))
-    dispatch(setSystemPrompt(promptValue))
+    setKey(inputValue)
+    setSystemPrompt(promptValue)
   }
 
   return (

@@ -9,33 +9,36 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from './ui/button'
-import { useLiveQuery } from '@electric-sql/pglite-react'
 import ModelSearch from './ModelSearch'
 import { memo } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useSelectedModel } from '@/stores/useSelectedModel'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '@/db/db'
+import FavoriteModels from './FavoriteModels'
 
 const DropdownWrapper = memo(({ selectedModel }) => {
   const setSelectedModel = useSelectedModel((state) => state.setModel)
-  const query = useLiveQuery('SELECT * FROM favorite_models')
-  const favorites = query === undefined ? [] : query.rows
+  const favoriteModels = useLiveQuery(
+    () => db.favorite_models.toArray(),
+    [],
+    [],
+  )
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="w-fit max-w-6/10">
         <Button variant="outline">
-          <p className="max-w-9/10 overflow-clip">{selectedModel.name}</p>
+          <p>{selectedModel.name}</p>
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuRadioGroup
-          value={selectedModel.id || selectedModel.openrouter_id}
-        >
+        <DropdownMenuRadioGroup value={selectedModel.id}>
           <DropdownMenuLabel>Favorite models</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {favorites.length > 0 ? (
-            favorites.map((favorite) => (
+          {favoriteModels.length > 0 ? (
+            favoriteModels.map((favorite) => (
               <DropdownMenuRadioItem
                 key={favorite.id}
                 value={favorite.id}
@@ -51,7 +54,10 @@ const DropdownWrapper = memo(({ selectedModel }) => {
           )}
           <DropdownMenuSeparator />
         </DropdownMenuRadioGroup>
-        <ModelSearch />
+        <div className="flex items-center justify-between px-2">
+          <ModelSearch favoriteModels={favoriteModels} />
+          <FavoriteModels favoriteModels={favoriteModels} />
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )

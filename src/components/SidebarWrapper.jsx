@@ -1,4 +1,3 @@
-import { useLiveQuery, usePGlite } from '@electric-sql/pglite-react'
 import {
   Sidebar,
   SidebarContent,
@@ -21,27 +20,39 @@ import { useState } from 'react'
 import SidebarItemWrapper from './SidebarItemWrapper'
 import Settings from './Settings'
 import SidebarHeaderWrapper from './SidebarHeaderWrapper'
+import { db } from '@/db/db'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { useStreamState } from '@/stores/useStreamState'
 
 const SidebarWrapper = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const db = usePGlite()
-  const request = useLiveQuery(`
-    SELECT c.id, c.title
-    FROM chats c
-    JOIN (
-        SELECT chat_id, MAX(timestamp) AS last_message_timestamp
-        FROM messages
-        GROUP BY chat_id
-    ) AS last_messages ON c.id = last_messages.chat_id
-    ORDER BY last_messages.last_message_timestamp DESC;`)
-  const chats = request === undefined ? [] : request.rows
+  const streaming = useStreamState((state) => state.streaming)
+  const chats = useLiveQuery(
+    async () => {
+      const chatsResult = await db.chats.toArray()
+      console.log(chatsResult)
+      return Promise.all(
+        chatsResult.map(async (chat) => {
+          const lastMessage = await db.messages
+            .where('chat_id')
+            .equals(chat.id)
+            .last()
+          return { ...chat, lastMessage: lastMessage?.timestamp }
+        }),
+      )
+    },
+    [streaming],
+    [],
+  )
+  const sortedChats = [...chats].sort((a, b) => b.lastMessage - a.lastMessage)
+  console.log(sortedChats)
   const [open, setOpen] = useState(true)
   const updateTitle = (newTitle, chatId) => {
-    db.query('UPDATE chats SET title = $1 WHERE id = $2', [newTitle, chatId])
+    db.chats.update(chatId, { title: newTitle })
   }
   const deleteChat = async (chatId) => {
-    await db.query('DELETE FROM chats WHERE id = $1', [chatId])
+    await db.chats.where('id').equals(chatId).delete()
     navigate('/')
   }
   return (
@@ -61,7 +72,7 @@ const SidebarWrapper = () => {
               </SidebarGroupAction>
               <SidebarMenu>
                 {open ? (
-                  chats.map((chat) => (
+                  sortedChats.map((chat) => (
                     <SidebarMenuItem key={chat.id} asChild>
                       <SidebarMenuButton asChild>
                         <SidebarItemWrapper
@@ -69,6 +80,7 @@ const SidebarWrapper = () => {
                           location={location}
                           updateTitle={updateTitle}
                           deleteChat={deleteChat}
+                          disabled={streaming}
                         />
                       </SidebarMenuButton>
                     </SidebarMenuItem>

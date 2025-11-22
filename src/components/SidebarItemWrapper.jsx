@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Input } from './ui/input'
 import { Edit, Save, X } from 'lucide-react'
-import { NavLink } from 'react-router'
+import { Link } from 'react-router'
 import { Button } from './ui/button'
 import {
   ContextMenu,
@@ -20,7 +20,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-const SidebarItemWrapper = ({ chat, location, updateTitle, deleteChat }) => {
+const SidebarItemWrapper = ({
+  chat,
+  location,
+  updateTitle,
+  deleteChat,
+  disabled,
+}) => {
   const [editing, setEditing] = useState(false)
   const [titleInput, setTitleInput] = useState(chat.title)
   const onUpdate = () => {
@@ -49,12 +55,20 @@ const SidebarItemWrapper = ({ chat, location, updateTitle, deleteChat }) => {
     </div>
   ) : (
     <div
-      className={`flex items-center justify-between p-2 rounded-lg group hover:bg-gray-100 dark:hover:bg-stone-800 ${location.pathname === `/${chat.id}` ? 'bg-gray-200 dark:bg-neutral-700 font-bold' : null} `}
+      className={`flex items-center justify-between p-2 rounded-lg group ${disabled ? 'pointer-events-none dark:text-stone-400' : 'hover:bg-gray-100 dark:hover:bg-stone-800'} ${location.pathname === `/${chat.id}` ? 'bg-gray-200 dark:bg-neutral-700 font-bold' : null} `}
     >
-      <NavLink to={`/${chat.id}`} className="w-full">
+      <Link
+        to={disabled ? null : `/${chat.id}`}
+        className="w-full"
+        aria-disabled={disabled}
+      >
         <Dialog>
           <ContextMenu>
-            <ContextMenuTrigger>{chat.title}</ContextMenuTrigger>
+            <ContextMenuTrigger>
+              <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+                {chat.title}
+              </p>
+            </ContextMenuTrigger>
             <ContextMenuContent>
               <ContextMenuItem onClick={() => setEditing(true)}>
                 Edit
@@ -75,7 +89,7 @@ const SidebarItemWrapper = ({ chat, location, updateTitle, deleteChat }) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </NavLink>
+      </Link>
     </div>
   )
 }

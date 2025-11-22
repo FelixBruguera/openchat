@@ -3,10 +3,21 @@ import Message from './Message'
 import ErrorMessage from './ErrorMessage'
 import { Skeleton } from './ui/skeleton'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import StreamMessage from './StreamMessage'
+import { useStreamState } from '@/stores/useStreamState'
 
-const ChatMessages = ({ messages, isNew, loading, error, retry, onBranch }) => {
+const ChatMessages = ({
+  messages,
+  isNew,
+  loading,
+  error,
+  retry,
+  onBranch,
+  streamingMessage,
+}) => {
   const listRef = useRef(null)
-  const itemCount = messages.length + (loading || error ? 1 : 0)
+  const streaming = useStreamState((state) => state.streaming)
+  const itemCount = messages.length + (streaming || loading || error ? 1 : 0)
   const rowVirtualizer = useVirtualizer({
     count: itemCount,
     estimateSize: () => 100,
@@ -16,13 +27,12 @@ const ChatMessages = ({ messages, isNew, loading, error, retry, onBranch }) => {
   const virtualItems = rowVirtualizer.getVirtualItems()
 
   useEffect(() => {
-    rowVirtualizer.scrollToIndex(messages.length, { align: 'end' })
+    rowVirtualizer.scrollToIndex(messages.length - 1, { align: 'end' })
   }, [messages.length, rowVirtualizer])
-
   return (
     <div
       ref={listRef}
-      className="flex flex-col justify-start overflow-y-auto h-full py-3 max-w-350 w-full mx-auto mt-5"
+      className="flex flex-col justify-start overflow-y-auto h-full max-w-350 w-full mx-auto"
     >
       <div
         className="relative"
@@ -46,8 +56,11 @@ const ChatMessages = ({ messages, isNew, loading, error, retry, onBranch }) => {
                 >
                   {isLoaderRow ? (
                     <>
-                      {loading && (
-                        <Skeleton className="p-5 mx-5 w-2/8 rounded-xl bg-stone-300 dark:bg-stone-700" />
+                      {streaming && !error && streamingMessage === '' && (
+                        <Skeleton className="p-5 mx-5 w-1/3 rounded-xl bg-stone-300 dark:bg-stone-700" />
+                      )}
+                      {streaming && (
+                        <StreamMessage message={streamingMessage} />
                       )}
                       {error && (
                         <ErrorMessage

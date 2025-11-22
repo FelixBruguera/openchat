@@ -1,8 +1,9 @@
 import ModelItem from './ModelItem'
-import { useCallback, useState } from 'react'
 import { useAvailableModels } from '@/stores/useAvailableModels'
+import { db } from '@/db/db'
+import { useLiveQuery } from 'dexie-react-hooks'
 
-const ModelList = ({ favoriteModels, search, showDetails }) => {
+const ModelList = ({ search, showDetails, favoriteModelsIds }) => {
   const availableModels = useAvailableModels((state) => state.models)
   const filterModels = () => {
     const cleanSearch = search.trim().toLowerCase()
@@ -15,16 +16,11 @@ const ModelList = ({ favoriteModels, search, showDetails }) => {
     )
   }
   const filteredModels = filterModels()
-  const [defaultModel, setDefaultModel] = useState(
-    localStorage.getItem('defaultModel'),
+  const defaultModel = useLiveQuery(
+    () => db.favorite_models.where('is_default').equals(1).first(),
+    [],
+    {},
   )
-  const saveDefault = useCallback((model) => {
-    localStorage.setItem(
-      'defaultModel',
-      JSON.stringify({ name: model.name, openrouter_id: model.id }),
-    )
-    setDefaultModel(model)
-  }, [])
   return (
     <ul className="h-full w-full overflow-auto flex flex-col gap-6 lg:gap-3">
       {search.length <= 2 ? (
@@ -36,9 +32,9 @@ const ModelList = ({ favoriteModels, search, showDetails }) => {
           <ModelItem
             key={model.id}
             model={model}
-            isFavorite={favoriteModels.has(model.id)}
-            isDefault={model.name === defaultModel.name}
-            saveDefault={saveDefault}
+            isFavorite={favoriteModelsIds.has(model.id)}
+            isDefault={model.id === defaultModel?.id}
+            defaultModelId={defaultModel?.id}
             showDetails={showDetails}
           />
         ))

@@ -1,14 +1,13 @@
 import { memo } from 'react'
-import { CommandItem } from './ui/command'
-import { Calendar, LucideAArrowDown, Pin } from 'lucide-react'
-import { usePGlite } from '@electric-sql/pglite-react'
 import { Button } from './ui/button'
 import { Switch } from './ui/switch'
 import { format } from 'date-fns'
+import { db } from '@/db/db'
+import { Bookmark } from 'lucide-react'
 
 const ModelDetail = ({ children }) => {
   return (
-    <li className="flex items-center gap-1 text-sm text-stone-300 border border-stone-900 bg-transparent px-2 py-1 rounded-lg hover:bg-stone-900 transition-colors">
+    <li className="flex items-center gap-1 text-sm text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-900 bg-transparent px-2 py-1 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors">
       {children}
     </li>
   )
@@ -22,23 +21,26 @@ const formatContext = (contextLength) => {
 }
 
 const ModelItem = memo(
-  ({ model, isFavorite, isDefault, saveDefault, showDetails }) => {
-    const db = usePGlite()
+  ({ model, isFavorite, isDefault, showDetails, defaultModelId }) => {
     const onFavorite = () =>
-      db.query(
-        'INSERT INTO favorite_models (openrouter_id, name) VALUES ($1, $2)',
-        [model.id, model.name],
-      )
-    const removeFavorite = () =>
-      db.query('DELETE FROM favorite_models WHERE openrouter_id = $1', [
-        model.id,
+      db.favorite_models.add({
+        id: model.id,
+        name: model.name,
+        is_default: 0,
+      })
+    const setDefault = async () =>
+      await Promise.all([
+        db.favorite_models.update(defaultModelId, { is_default: 0 }),
+        db.favorite_models.update(model.id, { is_default: 1 }),
       ])
+    const removeFavorite = () =>
+      db.favorite_models.where('id').equals(model.id).delete()
     const contextLength = formatContext(model.context_length)
     return (
       <li value={model.name} className="w-full max-w-200 mx-auto">
         <div className="flex flex-col items-start gap-2 lg:gap-0">
           <div className="h-10 w-full flex items-center justify-between z-0">
-            <h2 className="text-xl">{model.name}</h2>
+            <h2 className="text-base">{model.name}</h2>
             <div className="flex items-center justify-evenly z-1">
               <Switch
                 className="data-[state=unchecked]:bg-gray-400 "
@@ -49,10 +51,11 @@ const ModelItem = memo(
               />
               <Button
                 variant="ghost"
-                onClick={() => saveDefault(model)}
+                onClick={() => setDefault()}
                 title="Default model"
+                disabled={!isFavorite}
               >
-                <Pin
+                <Bookmark
                   className={`size-5 ${isDefault ? 'fill-black dark:fill-white' : 'fill-transparent'}`}
                 />
               </Button>
@@ -60,7 +63,7 @@ const ModelItem = memo(
           </div>
           {showDetails && (
             <div className="flex flex-col items-start gap-2">
-              <p className="text-sm text-stone-400 text-justify w-full">
+              <p className="text-sm text-stone-600 dark:text-stone-400 text-justify w-full">
                 {model.description}
               </p>
               <ul className="flex gap-3 flex-wrap lg:flex-nowrap">

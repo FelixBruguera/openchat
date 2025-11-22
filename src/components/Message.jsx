@@ -2,35 +2,39 @@ import MarkdownRenderer from './MarkdownRenderer'
 import { memo } from 'react'
 import { useState } from 'react'
 import { Button } from './ui/button'
-import { ChevronsDown, ChevronsUp, Copy, GitBranchIcon } from 'lucide-react'
+import { ChevronDown, ChevronUp, Copy, GitBranchIcon } from 'lucide-react'
+import { format } from 'date-fns'
 
 const Message = memo(({ data, onBranch }) => {
-  const isUser = data.model === null
+  const isUser = !data?.model
   const [open, setOpen] = useState(false)
+  if (!data) {
+    return null
+  }
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       {isUser ? (
         <div
-          className={`relative flex mb-3 flex-col items-start p-5 mx-5 w-fit max-w-5/8 border border-gray-300 rounded-xl group bg-neutral-100 dark:text-white 
+          className={`flex mb-3 items-start py-3 px-4  mx-5 w-fit max-w-5/8 border border-gray-300 rounded-xl group bg-neutral-100 dark:text-white 
                     dark:bg-neutral-700 dark:border-gray-700 overflow-clip ${open ? 'h-fit' : 'max-h-30'}`}
         >
           <p>{data.message}</p>
           {data.message.length > 350 ? (
             open ? (
               <Button
-                className="z-1 absolute inset-x-0 inset-y-0 w-fit"
-                variant="outline"
+                className="w-fit"
+                variant="ghost"
                 onClick={() => setOpen(false)}
               >
-                <ChevronsUp />
+                <ChevronUp />
               </Button>
             ) : (
               <Button
-                className="z-1 absolute inset-x-0 w-fit inset-y-0"
-                variant="outline"
+                className="w-fit"
+                variant="ghost"
                 onClick={() => setOpen(true)}
               >
-                <ChevronsDown />
+                <ChevronDown />
               </Button>
             )
           ) : null}
@@ -40,6 +44,7 @@ const Message = memo(({ data, onBranch }) => {
           <MarkdownRenderer content={data.message} />
           <div className="opacity-0 group-hover:opacity-100 flex transition-all items-center gap-3 text-xs text-gray-600 dark:text-gray-300">
             <p>{data.model}</p>
+            <p>{format(new Date(data.timestamp), 'MMM d y, HH:mm')}</p>
             <p>Tokens: {data.tokens}</p>
             <Button
               title="Copy"

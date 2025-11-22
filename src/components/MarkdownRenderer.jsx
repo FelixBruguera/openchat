@@ -155,7 +155,7 @@ const MarkdownRenderer = ({ content }) => {
           // Styled blockquotes
           blockquote({ children }) {
             return (
-              <blockquote className="border-l-4 border-gray-400 pl-4 py-1 my-4 text-gray-700 italic">
+              <blockquote className="border-l-4 border-gray-400 pl-4 py-1 my-4 text-gray-700 dark:text-stone-300 italic">
                 {children}
               </blockquote>
             )
