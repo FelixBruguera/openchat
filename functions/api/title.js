@@ -10,7 +10,7 @@ export async function onRequest(context) {
     await openRouter.chat
       .send({
         model: body.model,
-        messages: [{ role: 'user', content: body.prompt }],
+        messages: body.messages,
       })
       .then((response) => JSON.stringify(response)),
   )
