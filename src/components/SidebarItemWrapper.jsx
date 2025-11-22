@@ -38,18 +38,19 @@ const SidebarItemWrapper = ({
     <div className="flex flex-col items-center justify-between p-2 gap-3 ">
       <Input
         value={titleInput}
+        className="w-full"
         onChange={(e) => setTitleInput(e.target.value)}
       />
       <div className="flex w-full items-center justify-evenly">
-        <Button className="relative right-0 z-3" onClick={() => onUpdate()}>
-          <Save />
+        <Button className="text-sm" onClick={() => onUpdate()}>
+          Save
         </Button>
         <Button
-          className="relative right-0 z-3"
-          variant="destructive"
+          className="text-sm"
+          variant="secondary"
           onClick={() => setEditing(false)}
         >
-          <X />
+          Cancel
         </Button>
       </div>
     </div>
