@@ -67,8 +67,13 @@ const SidebarWrapper = () => {
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarGroupLabel>Chats</SidebarGroupLabel>
-              <SidebarGroupAction onClick={() => navigate('/')}>
-                <Plus />
+              <SidebarGroupAction
+                onClick={streaming ? null : () => navigate('/')}
+                className={`${streaming && '!text-stone-400 dark:!text-stone-600 hover:pointer-events-none hover:bg-transparent dark:hover:bg-transparent'}`}
+              >
+                <Plus
+                  className={`${streaming && 'hover:fill-stone-600 dark:hover:color-stone-300'}`}
+                />
               </SidebarGroupAction>
               <SidebarMenu>
                 {open ? (

@@ -33,7 +33,7 @@ const DropdownWrapper = memo(({ selectedModel }) => {
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="min-w-70">
         <DropdownMenuRadioGroup value={selectedModel.id}>
           <DropdownMenuLabel>Favorite models</DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -48,7 +48,7 @@ const DropdownWrapper = memo(({ selectedModel }) => {
               </DropdownMenuRadioItem>
             ))
           ) : (
-            <p className="text-sm text-gray-600 dark:text-gray-300 py-2">
+            <p className="text-sm text-gray-600 dark:text-gray-300 p-2">
               You don't have any favorite models
             </p>
           )}
