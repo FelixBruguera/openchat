@@ -40,7 +40,7 @@ const ModelItem = memo(
       <li value={model.name} className="w-full max-w-200 mx-auto">
         <div className="flex flex-col items-start gap-2 lg:gap-0">
           <div className="h-10 w-full flex items-center justify-between z-0">
-            <h2 className="text-base">{model.name}</h2>
+            <h2 className="text-sm lg:text-base">{model.name}</h2>
             <div className="flex items-center justify-evenly z-1">
               <Switch
                 className="data-[state=unchecked]:bg-gray-400 "

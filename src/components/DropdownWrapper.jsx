@@ -27,7 +27,7 @@ const DropdownWrapper = memo(({ selectedModel }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="w-fit max-w-6/10">
+      <DropdownMenuTrigger asChild className="w-fit lg:max-w-6/10">
         <Button variant="outline">
           <p>{selectedModel.name}</p>
           <ChevronDown />

@@ -19,7 +19,7 @@ const FavoriteModels = ({ favoriteModels }) => {
         Manage
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="h-fit min-h-100 w-200 max-w-250! flex flex-col items-start gap-5">
+        <DialogContent className="h-fit min-h-100 lg:w-200 lg:max-w-250! flex flex-col items-start gap-5">
           <DialogTitle className="h-fit">Favorite Models</DialogTitle>
           <ul className="h-full w-full overflow-auto flex flex-col gap-6 lg:gap-3">
             {favoriteModels.length > 0 ? (
