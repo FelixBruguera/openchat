@@ -29,7 +29,7 @@ const DropdownWrapper = memo(({ selectedModel }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="w-fit lg:max-w-6/10">
         <Button variant="outline">
-          <p>{selectedModel.name}</p>
+          <p className='text-xs lg:text-sm'>{selectedModel.name}</p>
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
@@ -44,7 +44,7 @@ const DropdownWrapper = memo(({ selectedModel }) => {
                 value={favorite.id}
                 onClick={() => setSelectedModel(favorite)}
               >
-                {favorite.name}
+                <p className='text-xs lg:text-sm'>{favorite.name}</p>
               </DropdownMenuRadioItem>
             ))
           ) : (

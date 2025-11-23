@@ -163,8 +163,8 @@ function Sidebar({
   if (isMobile) {
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetTrigger className="absolute p-3 rounded-md w-fit z-3 bg-gray-300 dark:bg-stone-700">
-          <ArrowRightToLine size={20} />
+        <SheetTrigger className="absolute p-3 mt-5 rounded-md w-fit z-3 bg-transparent border-1 border-stone-400 dark:border-stone-700">
+          <ArrowRightToLine size={16} />
         </SheetTrigger>
         <SheetContent
           data-sidebar="sidebar"

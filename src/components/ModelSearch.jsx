@@ -16,11 +16,11 @@ const ModelSearch = ({ favoriteModels }) => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} className="my-2">
+      <Button onClick={() => setOpen(true)} className="text-xs lg:text-sm my-2">
         Search models
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="h-3/4 w-full max-w-250! flex flex-col items-start gap-5">
+        <DialogContent className="h-3/4 w-full max-w-250! flex flex-col items-start gap-5 text-sm lg:text-base">
           <DialogTitle className="h-fit">Models</DialogTitle>
           <div className="w-full flex flex-col gap-2 lg:flex-row justify-between max-w-200 mx-auto">
             <Input

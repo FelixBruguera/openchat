@@ -32,7 +32,7 @@ const ChatMessages = ({
   return (
     <div
       ref={listRef}
-      className="flex flex-col justify-start overflow-y-auto h-full max-w-350 w-full mx-auto"
+      className="flex flex-col justify-start overflow-y-auto h-full max-w-dvw lg:max-w-350 w-full mx-auto text-sm lg:text-base"
     >
       <div
         className="relative"

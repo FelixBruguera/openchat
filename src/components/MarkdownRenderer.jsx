@@ -94,7 +94,7 @@ const MarkdownRenderer = ({ content }) => {
   }
 
   return (
-    <div className="markdown-body">
+    <div className="markdown-body max-w-dvw overflow-x-auto">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[
@@ -171,7 +171,7 @@ const MarkdownRenderer = ({ content }) => {
           th({ children, align }) {
             return (
               <th
-                className="border border-gray-300 px-4 py-2 font-bold bg-gray-100 dark:bg-stone-800 dark:text-white dark:border-gray-500"
+                className="border border-gray-300 px-4 py-2 font-bold bg-gray-100 dark:bg-stone-800 dark:text-white dark:border-gray-700"
                 style={{ textAlign: align || 'left' }}
               >
                 {children}
@@ -181,7 +181,7 @@ const MarkdownRenderer = ({ content }) => {
           td({ children, align }) {
             return (
               <td
-                className="border border-gray-300 px-4 py-2 dark:border-gray-500"
+                className="border border-gray-300 px-4 py-2 dark:border-gray-700"
                 style={{ textAlign: align || 'left' }}
               >
                 {children}

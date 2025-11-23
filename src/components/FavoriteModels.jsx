@@ -15,7 +15,7 @@ const FavoriteModels = ({ favoriteModels }) => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} className="my-2">
+      <Button onClick={() => setOpen(true)} className="text-xs lg:text-sm my-2">
         Manage
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>

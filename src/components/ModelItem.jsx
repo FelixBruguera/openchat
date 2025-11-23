@@ -7,7 +7,7 @@ import { Bookmark } from 'lucide-react'
 
 const ModelDetail = ({ children }) => {
   return (
-    <li className="flex items-center gap-1 text-sm text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-900 bg-transparent px-2 py-1 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors">
+    <li className="flex items-center gap-1 text-xs lg:text-sm text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-900 bg-transparent px-2 py-1 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors">
       {children}
     </li>
   )

@@ -66,7 +66,7 @@ const SidebarItemWrapper = ({
         <Dialog>
           <ContextMenu>
             <ContextMenuTrigger>
-              <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+              <p className="text-xs lg:text-sm whitespace-nowrap overflow-hidden text-ellipsis">
                 {chat.title}
               </p>
             </ContextMenuTrigger>
