@@ -8,11 +8,11 @@ const ChatTitle = ({ chat }) => {
     return null
   }
   return (
-    <div className={`flex py-5 h-fit items-start justify-between gap-3 ml-15 mb-5 lg:mb-none lg:ml-auto w-8/10 mx-auto ${!titleOpen && "overflow-hidden"}`}>
+    <div className={`flex py-5 h-fit max-h-300 items-start justify-between gap-3 ml-15 mb-5 lg:mb-none lg:ml-auto w-8/10 mx-auto ${!titleOpen && "overflow-hidden"}`}>
       <h2
         className={`max-w-9/10 text-base font-semibold text-justify mx-auto`}
       >
-        {titleOpen ? chat.title.slice(0, 5000) : chat.title.slice(0, 100)}
+        {titleOpen ? chat.title.slice(0, 1000) : chat.title.slice(0, 100)}
       </h2>
       {chat.title?.length > 100 ? (
         <Button
