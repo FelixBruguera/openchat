@@ -1,4 +1,7 @@
-# Open Chat
+<div style="display: flex;align-items:start;justify-content:center">
+  <img width="40" height="40" alt="Open chat logo" src="public/icon.png" align="left"/>
+  <h1>Open Chat</h1>
+</div>  
 
 Open Chat is an LLM chat client with a responsive and customizable interface.
 
